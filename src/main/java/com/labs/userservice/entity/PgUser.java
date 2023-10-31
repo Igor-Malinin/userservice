@@ -1,4 +1,4 @@
-package com.labs.microver4.entity;
+package com.labs.userservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "user", schema = "user-schema")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,5 +36,5 @@ public class PgUser {
     private Boolean enabled;
 
     @Column(name = "companyId")
-    private Long companyId;
+    private String companyId;
 }

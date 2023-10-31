@@ -1,4 +1,4 @@
-package com.labs.microver4.model;
+package com.labs.userservice.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +12,5 @@ public class UserDto {
     private String login;
     private String password;
     private Boolean enabled;
-    private Long companyId;
+    private String companyId;
 }

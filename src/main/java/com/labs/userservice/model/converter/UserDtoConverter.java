@@ -1,7 +1,8 @@
-package com.labs.microver4.model.converter;
+package com.labs.userservice.model.converter;
 
-import com.labs.microver4.entity.PgUser;
-import com.labs.microver4.model.UserDto;
+
+import com.labs.userservice.entity.PgUser;
+import com.labs.userservice.model.UserDto;
 
 public class UserDtoConverter {
 
@@ -18,7 +19,7 @@ public class UserDtoConverter {
         return pgUser;
     }
 
-    public static UserDto convertEntityToDto(PgUser pgUser) {
+    public static UserDto toDto(PgUser pgUser) {
         UserDto userDto = new UserDto();
 
         userDto.setId(pgUser.getId());
