@@ -1,14 +1,11 @@
 package com.labs.userservice.controller;
 
-import com.labs.userservice.entity.PgUser;
 import com.labs.userservice.model.ChangeUserDto;
 import com.labs.userservice.model.UserDto;
-import com.labs.userservice.model.converter.UserDtoConverter;
 import com.labs.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,6 +25,11 @@ public class UserController {
         return userService.existsById(id);
     }
 
+    @GetMapping("/get-dir-name/{id}")
+    public String getDirName(@PathVariable String id) {
+        return userService.getName(id);
+    }
+
     @GetMapping("/get-all")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
@@ -38,7 +40,7 @@ public class UserController {
         return userService.changeEnabled(id);
     }
 
-    @PatchMapping("/change-user/{id}")
+    @PatchMapping("/update-user/{id}")
     public String changeUser(@PathVariable String id, @RequestBody ChangeUserDto changeUserDto) {
         return userService.changeUser(id, changeUserDto);
     }

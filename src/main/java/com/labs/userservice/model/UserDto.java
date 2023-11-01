@@ -13,4 +13,5 @@ public class UserDto {
     private String password;
     private Boolean enabled;
     private String companyId;
+    private CompanyInfoDto companyInfoDto;
 }

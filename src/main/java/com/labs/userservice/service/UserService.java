@@ -2,6 +2,7 @@ package com.labs.userservice.service;
 
 import com.labs.userservice.entity.PgUser;
 import com.labs.userservice.model.ChangeUserDto;
+import com.labs.userservice.model.CompanyInfoDto;
 import com.labs.userservice.model.UserDto;
 import com.labs.userservice.model.converter.UserDtoConverter;
 import com.labs.userservice.repository.PgUserRepository;
@@ -44,11 +45,22 @@ public class UserService {
     }
 
     @Transactional
+    public String getName(String id) {
+        PgUser pgUser = pgUserRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь с id: " + id + " - не существует"));
+
+        return UserDtoConverter.toDto(pgUser).getName();
+    }
+
+    @Transactional
     public List<UserDto> getAllUsers() {
         List<PgUser> pgUsers = pgUserRepository.findAll();
+        List<CompanyInfoDto> companyInfoDtos = userServiceFeignClients.getAllCompanies();
         List<UserDto> userDtos = new ArrayList<>();
-        for (PgUser entity : pgUsers) {
-            userDtos.add(UserDtoConverter.toDto(entity));
+        for (int i = 0; i < pgUsers.size(); i++) {
+            UserDto userDto = UserDtoConverter.toDto(pgUsers.get(i));
+            userDto.setCompanyInfoDto(userServiceFeignClients.getById(userDto.getCompanyId()));
+            userDtos.add(userDto);
         }
         return userDtos;
     }
