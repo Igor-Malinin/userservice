@@ -15,26 +15,21 @@ import org.hibernate.annotations.GenericGenerator;
 public class PgUser {
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "uuid2",
+        strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id")
     private String id;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "email")
     private String email;
-
     @Column(name = "login")
     private String login;
-
     @JsonIgnore
     @Column(name = "password")
     private String password;
-
     @Column(name = "enabled")
     private Boolean enabled;
-
     @Column(name = "companyId")
     private String companyId;
 }

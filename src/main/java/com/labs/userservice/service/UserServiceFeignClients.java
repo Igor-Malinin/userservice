@@ -9,8 +9,8 @@ import java.util.List;
 
 @FeignClient(
         name = "company-service",
-        path = "/companies",
-        url = "http://localhost:8081"
+        path = "/company",
+        url = "http://localhost:8040"
 )
 public interface UserServiceFeignClients {
 

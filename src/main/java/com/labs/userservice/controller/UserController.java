@@ -1,5 +1,6 @@
 package com.labs.userservice.controller;
 
+import com.labs.userservice.config.Config;
 import com.labs.userservice.model.ChangeUserDto;
 import com.labs.userservice.model.UserDto;
 import com.labs.userservice.service.UserService;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/")
 public class UserController {
 
     private final UserService userService;
@@ -45,15 +46,20 @@ public class UserController {
         return userService.changeUser(id, changeUserDto);
     }
 
-//    private final Config config;
+}
 
-//    @GetMapping
+
+
+
+
+//    private final Config config;
+//
+//    @GetMapping("/property")
 //    public String getUserProperty() {
 //        return config.getUserProperty();
 //    }
-
-//    @GetMapping
+//
+//    @GetMapping("/desc")
 //    public String getDescription() {
 //        return config.getDescription();
 //    }
-}
