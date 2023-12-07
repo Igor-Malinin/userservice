@@ -33,7 +33,6 @@ public class UserService {
         return pgUserRepository.save(UserDtoConverter.toEntity(userDto)).getId();
     }
 
-    @Transactional
     public Boolean existsById(String id) {
         PgUser pgUser = pgUserRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id: " + id + " - не существует"));
@@ -44,7 +43,6 @@ public class UserService {
         return true;
     }
 
-    @Transactional
     public String getName(String id) {
         PgUser pgUser = pgUserRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id: " + id + " - не существует"));
@@ -52,7 +50,6 @@ public class UserService {
         return UserDtoConverter.toDto(pgUser).getName();
     }
 
-    @Transactional
     public List<UserDto> getAllUsers() {
         List<PgUser> pgUsers = pgUserRepository.findAll();
         List<CompanyInfoDto> companyInfoDtos = userServiceFeignClients.getAllCompanies();
