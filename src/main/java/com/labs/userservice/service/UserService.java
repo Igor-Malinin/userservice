@@ -9,6 +9,10 @@ import com.labs.userservice.repository.PgUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +21,17 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserService {
-    private final PgUserRepository pgUserRepository;
-    private final UserServiceFeignClients userServiceFeignClients;
+    @Autowired
+    private PgUserRepository pgUserRepository;
+    @Autowired
+    private UserServiceFeignClients userServiceFeignClients;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Value("${spring.kafka.producer.topic.company-deleted-user}")
+    private String companyDeletedUserTopic;
 
     @Transactional
     public String createUser(UserDto userDto) {
@@ -98,5 +108,15 @@ public class UserService {
         }
         pgUserRepository.save(UserDtoConverter.toEntity(userDto));
         return "updated";
+    }
+
+    @KafkaListener(topics = "${spring.kafka.consumer.topic.company-deleted}", groupId = "${spring.kafka.consumer.group-id}")
+    public void handleCompanyDeleted(String companyId) {
+        List<PgUser> users = pgUserRepository.getUsersByCompanyId(companyId);
+        users.forEach(user -> {
+            user.setCompanyId(null);
+            pgUserRepository.save(user);
+        });
+        kafkaTemplate.send(companyDeletedUserTopic, companyId);
     }
 }
